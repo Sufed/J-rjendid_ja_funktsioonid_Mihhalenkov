@@ -12,12 +12,13 @@ def sport():
     sportlased = []
     tulemused = []
     while True:
+        print("")
         print("1. Добавить спортсмена")
         print("2. Узнать n лучших результатов")
         print("3. Упорядочить результаты в порядке возрастания баллов.")
         print("4. Найти результат(ы) спортсмена")
         print("5. Дисквалифицировать спортсменов")
-        print("0. Свой вариант")
+        print("0. Упорядочить результаты в порядке убывания баллов.")
         print("6. Выйти")
         valik = int(input("Сделайте выбор (0-6): "))
         if valik == 1:
@@ -39,7 +40,7 @@ def sport():
         elif valik == 5:
             remove(sportlased, tulemused)
         elif valik == 0:
-            print("Свой вариант.")
+            sort_scores_убывание(sportlased, tulemused)
         elif valik == 6:
             break
         else:
@@ -78,30 +79,23 @@ def found_scores(sportlased, tulemused):
             print("{} не найден".format(name))
 
 
-#СВОЙ ВАРИАНТ
+def sort_scores_убывание(sportlased, tulemused):
+    n = len(tulemused) #Функция len показывает кол-во элементов. Длинну.
+    for i in range(n):
+        for j in range(0, n-i-1): #0 начальная цифра. От чего будет отсчет. n-i-1 это до чего оно должно дойти.
+            #Цикл будет повторяться n-i-1 раз для каждого значения i, которое определяется во внешнем цикле,
+            #Значение j будет изменяться в каждой итерации цикла в соответствии с заданным диапазоном значений range().
+            if tulemused[j] < tulemused[j+1]: # Перестановка элементов
+                tulemused[j], tulemused[j+1] = tulemused[j+1], tulemused[j] 
+                sportlased[j], sportlased[j+1] = sportlased[j+1], sportlased[j]
+    for i in range(n): # Вывод информации о каждом спортсмене, его баллах и месте
+        print(f"{i+1}. {sportlased[i]} - {tulemused[i]} punkti")
 
 def remove(sportlased, tulemused):
-    kriteerium=int(input("Введите критерий (кол-во баллов): "))
-    for i in range(len(tulemused)):
+    kriteerium = int(input("Введите критерий (кол-во баллов): "))
+    for i in range(len(tulemused)-1, -1, -1):
         if tulemused[i] < kriteerium:
             del sportlased[i]
             del tulemused[i]
-            print("Sportlased, чьи результаты не дисквалифицированы: ", sportlased)
-            print("Их результаты: ", tulemused)
-#Код снизу будет изменятся т.к. я не знаю как его объяснять, но он работает.
-
-#def remove(sportlased, tulemused):
-#    criteria = int(input("Введите критерий (кол-во баллов): "))
-#    new_sportlased = []
-#    new_tulemused = []
-#    for i in range(len(sportlased)):
-#        if tulemused[i] >= criteria:
-#            new_sportlased.append(sportlased[i])
-#            new_tulemused.append(tulemused[i])
-#            print("Удалены спортсмены с результатами хуже {} баллов".format(criteria))
-#            for i in range(len(new_sportlased)):
-#                print("{} - {} баллов".format(new_sportlased[i], new_tulemused[i]))
-#                sportlased.clear()
-#                tulemused.clear()
-#                sportlased.extend(new_sportlased)
-#                tulemused.extend(new_tulemused)
+    print("Sportlased, чьи результаты не дисквалифицированы: ", sportlased)
+    print("Их результаты: ", tulemused)
