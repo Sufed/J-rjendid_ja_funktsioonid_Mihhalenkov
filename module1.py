@@ -38,22 +38,12 @@ def sport():
             found_scores(sportlased, tulemused)
         elif valik == 5:
             remove(sportlased, tulemused)
+        elif valik == 0:
+            print("Свой вариант.")
         elif valik == 6:
             break
         else:
             print("Неверный выбор")
-
-
-
-#Код снизу будет изменятся т.к. я не знаю как его объяснять, но он работает.    
-def generate_scores(tulemused):
-    for i in range(len(tulemused)):
-        score1 = random.randint(0, 100)
-        score2 = random.randint(0, 100)
-        score3 = random.randint(0, 100)
-        max_score = max(score1, score2, score3)
-        tulemused[i] = max_score
-
 def show_top_scores(tulemused):
     n = int(input("Введите количество лучших результатов, которые вы хотите узнать: "))
     if n > len(tulemused):
@@ -63,14 +53,21 @@ def show_top_scores(tulemused):
     for i in range(n):
         print("{}. {}".format(i+1, top_scores[i]))
 
-def sort_scores(sportlased, tulemused):
-    tuples = [(sportlased[i], tulemused[i]) for i in range(len(sportlased))]
-    sorted_tuples = sorted(tuples, key=lambda x: x[1])
-    print("Отсортированный список:")
-    for i in range(len(sorted_tuples)):
-        print("{}. {} - {} баллов".format(i+1, sorted_tuples[i][0], sorted_tuples[i][1]))
 
-def found_scores(sportlased, tulemused):
+def sort_scores(sportlased, tulemused):    
+    n = len(tulemused) #Функция len показывает кол-во элементов. Длинну.
+    for i in range(n):
+        for j in range(0, n-i-1): #0 начальная цифра. От чего будет отсчет. n-i-1 это до чего оно должно дойти.
+            #Цикл будет повторяться n-i-1 раз для каждого значения i, которое определяется во внешнем цикле,
+            #Значение j будет изменяться в каждой итерации цикла в соответствии с заданным диапазоном значений range().
+            if tulemused[j] > tulemused[j+1]: # Перестановка элементов
+                tulemused[j], tulemused[j+1] = tulemused[j+1], tulemused[j] 
+                sportlased[j], sportlased[j+1] = sportlased[j+1], sportlased[j]
+    for i in range(n): # Вывод информации о каждом спортсмене, его баллах и месте
+        print(f"{i+1}. {sportlased[i]} - {tulemused[i]} punkti")
+
+
+def found_scores(sportlased, tulemused): 
     names = input("Введите имена спортсменов через запятую: ")
     names_list = names.split(",")
     for name in names_list:
@@ -80,18 +77,31 @@ def found_scores(sportlased, tulemused):
         else:
             print("{} не найден".format(name))
 
+
+#СВОЙ ВАРИАНТ
+
 def remove(sportlased, tulemused):
-    criteria = int(input("Введите критерий: "))
-    new_sportlased = []
-    new_tulemused = []
-    for i in range(len(sportlased)):
-        if tulemused[i] >= criteria:
-            new_sportlased.append(sportlased[i])
-            new_tulemused.append(tulemused[i])
-            print("Удалены спортсмены с результатами хуже {} баллов".format(criteria))
-            for i in range(len(new_sportlased)):
-                print("{} - {} баллов".format(new_sportlased[i], new_tulemused[i]))
-                sportlased.clear()
-                tulemused.clear()
-                sportlased.extend(new_sportlased)
-                tulemused.extend(new_tulemused)
+    kriteerium=int(input("Введите критерий (кол-во баллов): "))
+    for i in range(len(tulemused)):
+        if tulemused[i] < kriteerium:
+            del sportlased[i]
+            del tulemused[i]
+            print("Sportlased, чьи результаты не дисквалифицированы: ", sportlased)
+            print("Их результаты: ", tulemused)
+#Код снизу будет изменятся т.к. я не знаю как его объяснять, но он работает.
+
+#def remove(sportlased, tulemused):
+#    criteria = int(input("Введите критерий (кол-во баллов): "))
+#    new_sportlased = []
+#    new_tulemused = []
+#    for i in range(len(sportlased)):
+#        if tulemused[i] >= criteria:
+#            new_sportlased.append(sportlased[i])
+#            new_tulemused.append(tulemused[i])
+#            print("Удалены спортсмены с результатами хуже {} баллов".format(criteria))
+#            for i in range(len(new_sportlased)):
+#                print("{} - {} баллов".format(new_sportlased[i], new_tulemused[i]))
+#                sportlased.clear()
+#                tulemused.clear()
+#                sportlased.extend(new_sportlased)
+#                tulemused.extend(new_tulemused)
